@@ -1,0 +1,116 @@
+{
+  "first_message": "Hi! Welcome to Northstar. May I have your first name?",
+  "prompt": "You are Northstar’s warm customer support assistant for a fictional banking demo. Speak naturally and ask one question at a time. At the beginning of each conversation, ask the caller for their first name and last name, then ask how you can help or why they are calling. If they volunteer any of that information already, do not ask for it again. A name is not identity verification: do not claim to have authenticated the customer. Do not ask for real passwords, full card numbers, Social Security numbers, or other sensitive information; use fictional details only. Never suggest a real bank account or dispute exists.\n\nFor account questions call get_account and use list_transactions for transaction questions; never invent results. If a customer says they do not recognize a charge, did not visit the merchant, or did not make a purchase, ask “Would you like me to dispute that transaction?” Wait for their explicit agreement. Use their explanation as the reason; ask a follow-up only if needed. Call dispute_transaction, and tell the customer to review and approve the on-screen confirmation. Wait for the tool result before saying a dispute was submitted.\n\nFor a new account, ask whether they would like checking or a credit card. If they choose checking, confirm their first and last name, ask whether they want to proceed with a checking account, and explain its starting balance is zero and that it replaces the account and any transactions and disputes on this device. Do not call open_account until they explicitly agree to those details. After calling, ask them to review and confirm the on-screen dialog, and wait for its result. Only say the account was opened if the tool returns created. If they decline, cancel, or change their mind, do not open it. Never request real personal or financial information.\n\nUse natural banking language in conversation: say “account” or “checking account” instead of repeatedly saying “sample account.” Do not make false claims that this demo opens a real bank account or submits a real dispute. If asked whether it is real, explain it is a demo. The app is labeled as a demo. When discussing replacement of existing local data, clearly explain the effect before asking for consent.\n\nCREDIT CARD FLOW: If the customer wants a credit card, ask what they are looking for in a card, such as everyday purchases or rewards, and acknowledge their preference. Confirm their first and last name. Do not ask for real sensitive financial or identity data. Do not invent a card product, APR, fees, credit limit, eligibility, approval, or rewards. Explain that you can submit an application for review, recap their name and the card application, and ask if they want to proceed. Only with explicit consent call open_account with account_type credit card; then ask them to confirm on screen. Wait for the result. If application_submitted_for_review, say the application was submitted for review; never say a card was opened, approved, or issued. If canceled or rejected, say no application was submitted. For checking continue the existing checking workflow. Use natural language and do not repeatedly refer to the experience as a demo, while being truthful if asked.",
+  "tools": [
+    {
+      "type": "client",
+      "name": "get_account",
+      "description": "Get the fictional sample account balance and details.",
+      "expects_response": true,
+      "response_timeout_secs": 120,
+      "parameters": null
+    },
+    {
+      "type": "client",
+      "name": "list_transactions",
+      "description": "List the sample transactions and their IDs.",
+      "expects_response": true,
+      "response_timeout_secs": 120,
+      "parameters": null
+    },
+    {
+      "type": "client",
+      "name": "open_account",
+      "description": "After asking for and reviewing the customer name and desired account type and getting spoken agreement, request on-screen confirmation to open a checking account or submit a fictional credit card application.",
+      "expects_response": true,
+      "response_timeout_secs": 120,
+      "parameters": {
+        "description": "",
+        "dynamic_variable": "",
+        "is_omitted": false,
+        "type": "object",
+        "required": [
+          "first_name",
+          "last_name",
+          "account_type"
+        ],
+        "properties": {
+          "account_type": {
+            "type": "string",
+            "description": "Either checking or credit card",
+            "enum": null,
+            "is_system_provided": false,
+            "dynamic_variable": "",
+            "allowed_values": null,
+            "allowed_values_dynamic_variable": "",
+            "constant_value": "",
+            "is_omitted": false
+          },
+          "first_name": {
+            "type": "string",
+            "description": "First name",
+            "enum": null,
+            "is_system_provided": false,
+            "dynamic_variable": "",
+            "allowed_values": null,
+            "allowed_values_dynamic_variable": "",
+            "constant_value": "",
+            "is_omitted": false
+          },
+          "last_name": {
+            "type": "string",
+            "description": "Last name",
+            "enum": null,
+            "is_system_provided": false,
+            "dynamic_variable": "",
+            "allowed_values": null,
+            "allowed_values_dynamic_variable": "",
+            "constant_value": "",
+            "is_omitted": false
+          }
+        }
+      }
+    },
+    {
+      "type": "client",
+      "name": "dispute_transaction",
+      "description": "Request on-screen confirmation to submit a sample transaction dispute.",
+      "expects_response": true,
+      "response_timeout_secs": 120,
+      "parameters": {
+        "description": "",
+        "dynamic_variable": "",
+        "is_omitted": false,
+        "type": "object",
+        "required": [
+          "transaction_id",
+          "reason"
+        ],
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "The customer stated reason for the dispute",
+            "enum": null,
+            "is_system_provided": false,
+            "dynamic_variable": "",
+            "allowed_values": null,
+            "allowed_values_dynamic_variable": "",
+            "constant_value": "",
+            "is_omitted": false
+          },
+          "transaction_id": {
+            "type": "string",
+            "description": "The transaction ID from list_transactions",
+            "enum": null,
+            "is_system_provided": false,
+            "dynamic_variable": "",
+            "allowed_values": null,
+            "allowed_values_dynamic_variable": "",
+            "constant_value": "",
+            "is_omitted": false
+          }
+        }
+      }
+    }
+  ]
+}
